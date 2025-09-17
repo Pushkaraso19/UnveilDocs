@@ -83,7 +83,819 @@ h2, h3 {
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
 }
-/* PolicyInsights.css - Add your custom styles for PolicyInsights here */
+/* PolicyInsights.css */
+
+/* PolicyInsights.css */
+
+.policy-insights-container {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  flex-direction: column;
+  overflow-x: hidden;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.policy-insights-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  height: 100%;
+  width: 100%;
+  background-color: var(--bg-primary);
+  transition: background-color 0.3s ease;
+}
+
+.policy-insights-bg-gradient-1 {
+  position: absolute;
+  bottom: 0;
+  left: -20%;
+  right: 0;
+  top: -10%;
+  height: 500px;
+  width: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle farthest-side, rgba(255, 0, 182, 0.15), rgba(255, 255, 255, 0));
+}
+
+.policy-insights-bg-gradient-2 {
+  position: absolute;
+  bottom: 0;
+  right: -20%;
+  top: -10%;
+  height: 500px;
+  width: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle farthest-side, rgba(255, 0, 182, 0.15), rgba(255, 255, 255, 0));
+}
+
+.policy-insights-bg-gradient-3 {
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  height: 20rem;
+  width: 20rem;
+  border-radius: 50%;
+  background-color: rgba(56, 224, 123, 0.1);
+  filter: blur(100px);
+  animation: pulse-slow 8s ease-in-out infinite;
+}
+
+.policy-insights-bg-gradient-4 {
+  position: absolute;
+  bottom: 25%;
+  right: 33%;
+  height: 16rem;
+  width: 16rem;
+  border-radius: 50%;
+  background-color: rgba(101, 232, 154, 0.1);
+  filter: blur(100px);
+  animation: pulse-medium 6s ease-in-out infinite;
+}
+
+.policy-insights-content {
+  display: flex;
+  flex: 1;
+}
+
+.policy-insights-main {
+  z-index: 10;
+  flex: 1;
+  padding: 1rem;
+}
+
+@media (min-width: 640px) {
+  .policy-insights-main {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .policy-insights-main {
+    padding: 2rem;
+    margin-left: 16rem;
+  }
+}
+
+.policy-insights-main-container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 80rem;
+}
+
+.policy-insights-question-section {
+  margin-bottom: 2rem;
+}
+
+.policy-insights-question-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
+  padding: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(40px);
+  transition: all 0.3s ease;
+}
+
+.policy-insights-question-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(56, 224, 123, 0.1);
+  border-color: rgba(56, 224, 123, 0.3);
+}
+
+.policy-insights-question-avatar {
+  display: flex;
+  height: 3rem;
+  width: 3rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.policy-insights-question-avatar-icon {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.policy-insights-question-text {
+  flex: 1;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@media (min-width: 640px) {
+  .policy-insights-question-text {
+    font-size: 1.125rem;
+  }
+}
+
+.policy-insights-ask-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  background: linear-gradient(to right, var(--primary-500), var(--primary-400));
+  color: white;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.policy-insights-ask-btn:hover:not(:disabled) {
+  background: linear-gradient(to right, var(--primary-400), var(--primary-300));
+  transform: scale(1.1);
+}
+
+.policy-insights-ask-btn:disabled {
+  cursor: not-allowed;
+}
+
+.policy-insights-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 16rem;
+  border-radius: 1rem;
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.policy-insights-loading-content {
+  text-align: center;
+}
+
+.policy-insights-loading-icon {
+  animation: pulse 2s ease-in-out infinite;
+  border-radius: 50%;
+  height: 4rem;
+  width: 4rem;
+  background-color: rgba(56, 224, 123, 0.2);
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.policy-insights-loading-icon-symbol {
+  color: var(--primary-400);
+  font-size: 1.875rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.policy-insights-loading-text {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.policy-insights-progress-bar {
+  margin-top: 1rem;
+  height: 0.25rem;
+  width: 12rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.policy-insights-progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--primary-500), var(--primary-400));
+  animation: progress 2s ease-in-out infinite;
+}
+
+.policy-insights-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.policy-insights-card {
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
+  padding: 1.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(40px);
+  transition: all 0.3s ease;
+}
+
+.policy-insights-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(56, 224, 123, 0.1);
+  border-color: rgba(56, 224, 123, 0.3);
+}
+
+.policy-insights-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.policy-insights-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: white;
+}
+
+.policy-insights-copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  transition: color 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.policy-insights-copy-btn:hover {
+  color: var(--primary-400);
+}
+
+.policy-insights-card-content {
+  margin-top: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.policy-insights-summary-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.policy-insights-summary-icon {
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.policy-insights-summary-icon-symbol {
+  color: var(--primary-400);
+}
+
+.policy-insights-summary-content {
+  flex: 1;
+}
+
+.policy-insights-summary-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: white;
+}
+
+.policy-insights-summary-text {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.policy-insights-confidence {
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.policy-insights-confidence-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.policy-insights-confidence-bar {
+  width: 5rem;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.policy-insights-confidence-fill {
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: linear-gradient(to right, var(--primary-500), var(--primary-400));
+  transition: all 1s ease;
+}
+
+.policy-insights-confidence-value {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary-400);
+}
+
+.policy-insights-clauses-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: white;
+}
+
+.policy-insights-clauses-subtitle {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.policy-insights-clauses-list {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.policy-insights-clause {
+  position: relative;
+  border-radius: 0 0.5rem 0.5rem 0;
+  border-left: 2px solid var(--primary-500);
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  font-size: 0.875rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.policy-insights-clause-copy {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: rgba(255, 255, 255, 0.6);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.policy-insights-clause:hover .policy-insights-clause-copy {
+  opacity: 1;
+}
+
+.policy-insights-clause-copy:hover {
+  color: var(--primary-400);
+}
+
+.policy-insights-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .policy-insights-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Risk Assessment specific styles */
+.policy-insights-risk-card {
+  background: linear-gradient(to bottom right, rgba(127, 29, 29, 0.1), rgba(153, 27, 27, 0.05));
+}
+
+.policy-insights-risk-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.policy-insights-risk-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.policy-insights-risk-icon {
+  flex-shrink: 0;
+}
+
+.policy-insights-risk-icon-symbol {
+  font-size: 1.875rem;
+  color: rgb(248, 113, 113);
+}
+
+.policy-insights-risk-content {
+  flex: 1;
+}
+
+.policy-insights-risk-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: rgb(252, 165, 165);
+}
+
+.policy-insights-risk-subtitle {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: rgba(252, 165, 165, 0.7);
+}
+
+.policy-insights-risk-meter {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-radius: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+}
+
+.policy-insights-risk-chart {
+  position: relative;
+  height: 5rem;
+  width: 5rem;
+}
+
+.policy-insights-risk-chart svg {
+  height: 100%;
+  width: 100%;
+}
+
+.policy-insights-risk-chart-bg {
+  stroke: rgba(127, 29, 29, 0.5);
+}
+
+.policy-insights-risk-chart-fill {
+  stroke: rgb(248, 113, 113);
+}
+
+.policy-insights-risk-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.policy-insights-risk-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: rgb(252, 165, 165);
+}
+
+.policy-insights-risk-level {
+  font-size: 0.75rem;
+  color: rgba(252, 165, 165, 0.8);
+}
+
+.policy-insights-risk-list {
+  flex: 1;
+}
+
+.policy-insights-risk-items {
+  list-style-type: disc;
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(252, 165, 165, 0.9);
+}
+
+/* Recommendations specific styles */
+.policy-insights-recommendations-card {
+  background: linear-gradient(to bottom right, rgba(20, 83, 45, 0.1), rgba(22, 101, 52, 0.05));
+}
+
+.policy-insights-recommendations-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.policy-insights-recommendations-section {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.policy-insights-recommendations-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.policy-insights-recommendations-icon {
+  flex-shrink: 0;
+  padding-top: 0.125rem;
+}
+
+.policy-insights-recommendations-icon-symbol {
+  font-size: 1.5rem;
+  color: rgb(74, 222, 128);
+}
+
+.policy-insights-recommendations-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: rgb(134, 239, 172);
+}
+
+.policy-insights-recommendations-subtitle {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: rgba(134, 239, 172, 0.7);
+}
+
+.policy-insights-recommendations-list {
+  margin-top: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.policy-insights-recommendation-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.policy-insights-recommendation-icon {
+  margin-top: 0.125rem;
+  font-size: 1.25rem;
+  color: rgb(74, 222, 128);
+  transition: transform 0.3s ease;
+}
+
+.policy-insights-recommendation-item:hover .policy-insights-recommendation-icon {
+  transform: scale(1.1);
+}
+
+.policy-insights-recommendation-text {
+  flex: 1;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(134, 239, 172, 0.9);
+  transition: color 0.3s ease;
+}
+
+.policy-insights-recommendation-item:hover .policy-insights-recommendation-text {
+  color: rgb(134, 239, 172);
+}
+
+/* Comparison table styles */
+.policy-insights-comparison-card {
+  background: linear-gradient(to bottom right, rgba(30, 58, 138, 0.1), rgba(29, 78, 216, 0.05));
+}
+
+.policy-insights-comparison-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.policy-insights-comparison-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.policy-insights-comparison-icon {
+  flex-shrink: 0;
+  padding-top: 0.125rem;
+}
+
+.policy-insights-comparison-icon-symbol {
+  font-size: 1.5rem;
+  color: rgb(96, 165, 250);
+}
+
+.policy-insights-comparison-content {
+  flex: 1;
+}
+
+.policy-insights-comparison-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: rgb(147, 197, 253);
+}
+
+.policy-insights-comparison-subtitle {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: rgba(147, 197, 253, 0.7);
+}
+
+.policy-insights-table-container {
+  margin-top: 1rem;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.policy-insights-table {
+  width: 100%;
+  text-align: left;
+  font-size: 0.875rem;
+  color: rgba(147, 197, 253, 0.9);
+}
+
+.policy-insights-table-header {
+  background-color: rgba(255, 255, 255, 0.05);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: rgb(147, 197, 253);
+  letter-spacing: 0.05em;
+}
+
+.policy-insights-table-header th {
+  padding: 0.75rem 1rem;
+  font-weight: 500;
+}
+
+.policy-insights-table-body {
+  font-family: monospace;
+  font-size: 0.875rem;
+}
+
+.policy-insights-table-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.policy-insights-table-row:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.policy-insights-table-row:last-child {
+  border-bottom: none;
+}
+
+.policy-insights-table-cell {
+  padding: 0.75rem 1rem;
+}
+
+.policy-insights-table-cell-label {
+  font-family: sans-serif;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Glossary styles */
+.policy-insights-glossary-card {
+  background: linear-gradient(to bottom right, rgba(88, 28, 135, 0.1), rgba(107, 33, 168, 0.05));
+}
+
+.policy-insights-glossary-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(147, 51, 234, 0.1);
+  border-color: rgba(147, 51, 234, 0.3);
+}
+
+.policy-insights-glossary-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.policy-insights-glossary-icon {
+  flex-shrink: 0;
+}
+
+.policy-insights-glossary-icon-symbol {
+  font-size: 1.875rem;
+  color: rgb(196, 181, 253);
+}
+
+.policy-insights-glossary-content {
+  flex: 1;
+}
+
+.policy-insights-glossary-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: rgb(196, 181, 253);
+}
+
+.policy-insights-glossary-subtitle {
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: rgba(196, 181, 253, 0.7);
+}
+
+.policy-insights-glossary-list {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(196, 181, 253, 0.9);
+}
+
+.policy-insights-glossary-term {
+  font-weight: 600;
+  color: rgb(196, 181, 253);
+}
+
+/* Suggestion styles */
+.policy-insights-suggestion-card {
+  background: linear-gradient(to bottom right, rgba(120, 53, 15, 0.1), rgba(146, 64, 14, 0.05));
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.25rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(40px);
+  transition: all 0.3s ease;
+}
+
+.policy-insights-suggestion-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(251, 191, 36, 0.1);
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+.policy-insights-suggestion-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.policy-insights-suggestion-icon {
+  flex-shrink: 0;
+}
+
+.policy-insights-suggestion-icon-symbol {
+  font-size: 1.5rem;
+  color: rgb(251, 191, 36);
+}
+
+.policy-insights-suggestion-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgb(251, 191, 36);
+}
+
+.policy-insights-suggestion-text {
+  font-size: 0.875rem;
+  color: rgba(251, 191, 36, 0.8);
+  margin-top: 0.125rem;
+}
+
+@keyframes progress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
 
 .policy-insights-container {
   padding: 24px;

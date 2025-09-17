@@ -1,18 +1,101 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-:root {
-  --primary-color: #14b8a6;
+/* Global reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.glassmorphism-enhanced {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
-    0 4px 30px rgba(0, 0, 0, 0.1),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+html {
+  font-family: "Spline Sans", "Noto Sans", sans-serif;
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+:root {
+  /* Primary brand colors - consistent across themes */
+  --primary-color: #14b8a6;
+  --primary-500: #38e07b;
+  --primary-400: #65e89a;
+  --primary-300: #7ceaa8;
+  --primary-100: #d7f9e3;
+  
+  /* Dark theme variables (default) */
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #111111;
+  --bg-glass: rgba(255, 255, 255, 0.05);
+  --bg-glass-hover: rgba(255, 255, 255, 0.1);
+  
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-tertiary: rgba(255, 255, 255, 0.6);
+  --text-muted: rgba(255, 255, 255, 0.4);
+  
+  --border-primary: rgba(255, 255, 255, 0.1);
+  --border-secondary: rgba(255, 255, 255, 0.2);
+  --border-accent: rgba(56, 224, 123, 0.3);
+  
+  --shadow-sm: 0 4px 30px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-accent: 0 25px 50px -12px rgba(56, 224, 123, 0.1);
+  
+  --blur-sm: blur(10px);
+  --blur-md: blur(20px);
+  --blur-lg: blur(40px);
+  
+  /* Gradient colors for dark theme */
+  --gradient-primary: radial-gradient(circle farthest-side, rgba(255, 0, 182, 0.15), rgba(255, 255, 255, 0));
+  --gradient-secondary: radial-gradient(circle farthest-side, rgba(56, 224, 123, 0.1), rgba(255, 255, 255, 0));
+  --gradient-accent: linear-gradient(to right, var(--primary-500), var(--primary-400));
+  
+  /* Legacy variables for compatibility */
+  --neutral-900: #111714;
+  --neutral-800: #1d2822;
+  --neutral-700: #29382f;
+  --neutral-400: #9eb7a8;
+  --neutral-100: #e8edea;
+}
+
+/* Light theme variables */
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  --bg-glass-hover: rgba(255, 255, 255, 0.9);
+  
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  --text-muted: #94a3b8;
+  
+  --border-primary: rgba(148, 163, 184, 0.3);
+  --border-secondary: rgba(148, 163, 184, 0.5);
+  --border-accent: rgba(56, 224, 123, 0.5);
+  
+  --shadow-sm: 0 4px 30px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  --shadow-accent: 0 25px 50px -12px rgba(56, 224, 123, 0.2);
+  
+  --blur-sm: blur(10px);
+  --blur-md: blur(20px);
+  --blur-lg: blur(40px);
+  
+  /* Gradient colors for light theme */
+  --gradient-primary: radial-gradient(circle farthest-side, rgba(56, 224, 123, 0.1), rgba(255, 255, 255, 0));
+  --gradient-secondary: radial-gradient(circle farthest-side, rgba(20, 184, 166, 0.08), rgba(255, 255, 255, 0));
+  --gradient-accent: linear-gradient(to right, var(--primary-500), var(--primary-400));
 }
 
 @keyframes float-slow {
@@ -132,16 +215,6 @@ h2, h3 {
 
 .animate-pulse-medium {
   animation: pulse-medium 6s ease-in-out infinite;
-}
-
-/* Enhanced glassmorphism effect */
-.glassmorphism-enhanced {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.2),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 /* Smooth transitions for all interactive elements */
