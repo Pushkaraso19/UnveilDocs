@@ -1,0 +1,4 @@
+npm install -D @tailwindcss/forms @tailwindcss/container-queries
+npm install material-symbols
+npm install @heroicons/react
+npm install react-router-dom
