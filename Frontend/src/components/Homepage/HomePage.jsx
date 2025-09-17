@@ -8,7 +8,9 @@ const HomePage = () => {
     const [isUploading, setIsUploading] = useState(false);
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const [isInputFocused, setIsInputFocused] = useState(false);
+    const [showAccountDropdown, setShowAccountDropdown] = useState(false);
     const fileInputRef = useRef(null);
+    const accountDropdownRef = useRef(null);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
@@ -16,8 +18,20 @@ const HomePage = () => {
             setMousePosition({ x: e.clientX, y: e.clientY });
         };
 
+        // Close dropdown when clicking outside
+        const handleClickOutside = (event) => {
+            if (accountDropdownRef.current && !accountDropdownRef.current.contains(event.target)) {
+                setShowAccountDropdown(false);
+            }
+        };
+
         window.addEventListener('mousemove', handleMouseMove);
-        return () => window.removeEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, []);
 
     const handleSubmit = (e) => {
@@ -55,10 +69,14 @@ const HomePage = () => {
         }
     };
 
+    const toggleAccountDropdown = () => {
+        setShowAccountDropdown(!showAccountDropdown);
+    };
+
     // Calculate gradient position based on mouse position
     const gradientStyle = {
         background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, 
-                rgba(20, 184, 166, 0.15) 0%, 
+                rgba(56, 224, 123, 0.15) 0%, 
                 rgba(6, 182, 212, 0.1) 30%, 
                 rgba(99, 102, 241, 0.05) 60%, 
                 transparent 100%)`
@@ -100,18 +118,36 @@ const HomePage = () => {
                         <h2 className="homepage-logo-text">UnveilDocs</h2>
                     </div>
                     <div className="homepage-nav-container">
-                        <nav className="homepage-nav-enhanced">
-                            <a className="homepage-nav-link" href="#">Home</a>
-                            <a className="homepage-nav-link" href="#">About</a>
-                            <a className="homepage-nav-link" href="#">Contact</a>
-                        </nav>
                         <div className="homepage-nav-actions">
                             <ThemeToggle className="compact" />
-                            <Link to="/dashboard">
-                                <button className="homepage-login-btn">
-                                    <span>Log In</span>
+                            <div className="homepage-account-container" ref={accountDropdownRef}>
+                                <button
+                                    className="homepage-account-btn"
+                                    onClick={toggleAccountDropdown}
+                                    aria-expanded={showAccountDropdown}
+                                    aria-label="Account menu"
+                                >
+                                    <span className="material-symbols-outlined">account_circle</span>
                                 </button>
-                            </Link>
+
+                                {showAccountDropdown && (
+                                    <div className="homepage-account-dropdown glassmorphism-card">
+                                        <div className="homepage-account-dropdown-item">
+                                            <span className="material-symbols-outlined">manage_accounts</span>
+                                            <span>My Account</span>
+                                        </div>
+                                        <div className="homepage-account-dropdown-item">
+                                            <span className="material-symbols-outlined">support_agent</span>
+                                            <span>Contact Us</span>
+                                        </div>
+
+                                        <div className="homepage-account-dropdown-item">
+                                            <span className="material-symbols-outlined">logout</span>
+                                            <span>Logout</span>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </header>
@@ -128,42 +164,17 @@ const HomePage = () => {
                             </p>
                         </div>
 
-                        {/* Upload status */}
-                        {uploadedFiles.length > 0 && (
-                            <div className="homepage-upload-status">
-                                <div className="homepage-upload-header">
-                                    <span className="homepage-upload-count">
-                                        {uploadedFiles.length} file{uploadedFiles.length !== 1 ? 's' : ''} uploaded
-                                    </span>
-                                    <button
-                                        onClick={() => setUploadedFiles([])}
-                                        className="homepage-upload-clear"
-                                    >
-                                        Clear all
-                                    </button>
-                                </div>
-                                <div className="homepage-upload-files">
-                                    {uploadedFiles.map((file, index) => (
-                                        <div key={index} className="homepage-upload-file">
-                                            <span className="homepage-upload-file-name">{file.name}</span>
-                                            <span>{Math.round(file.size / 1024)} KB</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
                         <div className="homepage-features-grid">
-                            {/* Feature card 1 */}
-                            <div className="homepage-feature-card" onClick={triggerFileInput}>
+                            {/* Feature card 1 - Upload Documents */}
+                            <div className="homepage-feature-card glassmorphism-card" onClick={triggerFileInput}>
                                 <div className="homepage-feature-card-bg"></div>
                                 <div className="homepage-feature-icon">
                                     <span className="material-symbols-outlined homepage-feature-icon-symbol">upload_file</span>
                                 </div>
                                 <h3 className="homepage-feature-title">Upload Documents</h3>
-                                <p className="homepage-feature-description">Easily upload your legal documents in PDF or DOCX format.</p>
+                                <p className="homepage-feature-description">Easily upload your legal documents in PDF or DOCX format for AI-powered analysis.</p>
 
-                                <label className="homepage-feature-button">
+                                <button className="homepage-feature-button">
                                     <span>Select files</span>
                                     <input
                                         ref={fileInputRef}
@@ -174,17 +185,17 @@ const HomePage = () => {
                                         onChange={handleFileUpload}
                                         disabled={isUploading}
                                     />
-                                </label>
+                                </button>
                             </div>
 
-                            {/* Feature card 2 */}
-                            <div className="homepage-feature-card">
+                            {/* Feature card 2 - Ask Questions */}
+                            <div className="homepage-feature-card glassmorphism-card">
                                 <div className="homepage-feature-card-bg homepage-feature-card-bg-cyan"></div>
                                 <div className="homepage-feature-icon homepage-feature-icon-cyan">
-                                    <span className="material-symbols-outlined homepage-feature-icon-symbol homepage-feature-icon-symbol-cyan">aod_tablet</span>
+                                    <span className="material-symbols-outlined homepage-feature-icon-symbol homepage-feature-icon-symbol-cyan">psychology</span>
                                 </div>
                                 <h3 className="homepage-feature-title">Ask Questions</h3>
-                                <p className="homepage-feature-description">Use natural language to ask questions about your documents.</p>
+                                <p className="homepage-feature-description">Use natural language to ask questions about your documents and get instant insights.</p>
 
                                 <button
                                     onClick={handleAskExample}
@@ -194,14 +205,14 @@ const HomePage = () => {
                                 </button>
                             </div>
 
-                            {/* Feature card 3 */}
-                            <div className="homepage-feature-card">
+                            {/* Feature card 3 - Get Instant Answers */}
+                            <div className="homepage-feature-card glassmorphism-card">
                                 <div className="homepage-feature-card-bg homepage-feature-card-bg-indigo"></div>
                                 <div className="homepage-feature-icon homepage-feature-icon-indigo">
-                                    <span className="material-symbols-outlined homepage-feature-icon-symbol homepage-feature-icon-symbol-indigo">bolt</span>
+                                    <span className="material-symbols-outlined homepage-feature-icon-symbol homepage-feature-icon-symbol-indigo">auto_awesome</span>
                                 </div>
                                 <h3 className="homepage-feature-title">Get Instant Answers</h3>
-                                <p className="homepage-feature-description">Receive quick and accurate responses from our AI.</p>
+                                <p className="homepage-feature-description">Receive quick and accurate responses with detailed analysis and explanations.</p>
 
                                 <div className="homepage-feature-timing">
                                     <span className="material-symbols-outlined homepage-feature-timing-icon">schedule</span>
@@ -210,59 +221,76 @@ const HomePage = () => {
                             </div>
                         </div>
                     </div>
-                </main>
 
-                {/* Footer with input */}
-                <footer className="homepage-footer">
-                    <div className="homepage-footer-container">
-                        <form onSubmit={handleSubmit} className={`homepage-search-form ${isInputFocused ? 'focused' : ''}`}>
-                            <div className="homepage-search-container">
-                                <label className={`homepage-file-upload-btn ${isUploading ? 'uploading' : ''}`}>
-                                    {isUploading ? (
-                                        <div className="spinner"></div>
-                                    ) : (
-                                        <span className="material-symbols-outlined homepage-file-upload-icon">attach_file</span>
-                                    )}
-                                    <input
-                                        type="file"
-                                        className="hidden"
-                                        multiple
-                                        accept=".pdf,.docx"
-                                        onChange={handleFileUpload}
-                                        disabled={isUploading}
-                                    />
-                                </label>
-                                <input
-                                    className="homepage-search-input"
-                                    placeholder="Ask a question about your document..."
-                                    type="text"
-                                    value={question}
-                                    onChange={(e) => setQuestion(e.target.value)}
-                                    onFocus={() => setIsInputFocused(true)}
-                                    onBlur={() => setIsInputFocused(false)}
-                                    disabled={uploadedFiles.length === 0}
-                                />
-                                <button
-                                    type="submit"
-                                    disabled={!question.trim() || uploadedFiles.length === 0}
-                                    className="homepage-submit-btn"
-                                >
-                                    <span className="material-symbols-outlined homepage-submit-icon">send</span>
-                                </button>
-                            </div>
-                        </form>
+                    
+{/* Dynamic Footer */}
+                    <div
+                        className={`homepage-upload-only glassmorphism-enhanced ${isUploading ? 'uploading' : ''}`}
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={(e) => {
+                            e.preventDefault();
+                            handleFileUpload({ target: { files: e.dataTransfer.files } });
+                        }}
+                    >
+                        <label className={`homepage-file-upload-btn ${isUploading ? 'uploading' : ''}`}>
+                            {!isUploading && (
+                                <span className="material-symbols-outlined homepage-file-upload-icon">upload_file</span>
+                            )}
+                            <input
+                                type="file"
+                                className="hidden"
+                                multiple
+                                accept=".pdf,.docx"
+                                onChange={handleFileUpload}
+                                disabled={isUploading}
+                            />
+                        </label>
 
-                        {uploadedFiles.length === 0 && (
-                            <div className="homepage-upload-message">
-                                Upload a document to start asking questions
-                            </div>
-                        )}
+                        <div className="homepage-upload-details">
+                            {isUploading && (
+                                <span className="homepage-upload-text">Uploading...</span>
+                            )}
+
+                            {!isUploading && uploadedFiles.length === 0 && (
+                                <span className="homepage-upload-text">
+                                    Drag & drop or click to upload PDF/DOCX
+                                </span>
+                            )}
+
+                            {!isUploading && uploadedFiles.length > 0 && (
+                                <div className="homepage-upload-list">
+                                    <div className="homepage-upload-header">
+                                        <span className="homepage-upload-count">
+                                            {uploadedFiles.length} file{uploadedFiles.length !== 1 ? 's' : ''} uploaded
+                                        </span>
+                                        <button
+                                            onClick={() => setUploadedFiles([])}
+                                            className="homepage-upload-clear"
+                                        >
+                                            Clear all
+                                        </button>
+                                    </div>
+
+                                    <div className="homepage-upload-files">
+                                        {uploadedFiles.map((file, index) => (
+                                            <div key={index} className="homepage-upload-file">
+                                                <span className="material-symbols-outlined homepage-upload-file-icon">
+                                                    {file.type.includes("pdf") ? "picture_as_pdf" : "description"}
+                                                </span>
+                                                <span className="homepage-upload-file-name">{file.name}</span>
+                                                <span className="homepage-upload-file-size">
+                                                    {Math.round(file.size / 1024)} KB
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </footer>
+                </main>
+                
             </div>
-            
-            {/* Floating Theme Toggle */}
-            <ThemeToggle className="floating" />
         </div>
     );
 };
