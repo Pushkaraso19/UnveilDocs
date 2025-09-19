@@ -1,0 +1,983 @@
+/* Chat interface styles - Fixed at bottom when active */
+.chat-interface {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 1rem;
+  animation: expandChatInterface 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes expandChatInterface {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.95) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Chat container - minimal spacing */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  width: 100%;
+  max-width: 56rem;
+  margin: 0 auto;
+  animation: revealChatContainer 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+}
+
+@keyframes revealChatContainer {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes slideInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOutDown {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+@keyframes morphToChat {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Chat header - ultra minimal without file icon */
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Upload header - positioned in top right corner */
+.upload-header {
+  justify-content: flex-end;
+}
+
+.upload-header-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.upload-load-example-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  background: rgba(99, 102, 241, 0.05);
+  color: rgba(129, 140, 248, 0.9);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  height: auto;
+}
+
+.upload-load-example-btn:hover {
+  border-color: rgba(99, 102, 241, 0.3);
+  background: rgba(99, 102, 241, 0.08);
+  color: rgba(129, 140, 248, 1);
+}
+
+.upload-load-example-btn .material-symbols-outlined {
+  font-size: 0.875rem;
+}
+
+/* Light theme specific styling for upload example button */
+[data-theme="light"] .upload-load-example-btn {
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  background: rgba(99, 102, 241, 0.08);
+  color: rgba(79, 70, 229, 0.9);
+}
+
+[data-theme="light"] .upload-load-example-btn:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+  background: rgba(99, 102, 241, 0.12);
+  color: rgba(79, 70, 229, 1);
+}
+
+/* Chat header with file - original spacing */
+.chat-header-with-file {
+  margin-bottom: 0.5rem;
+}
+
+.chat-file-info {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  max-width: none;
+}
+
+.chat-file-name {
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  opacity: 0.8;
+}
+
+.chat-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+/* Chat input area with disconnected reupload button */
+.chat-input-area {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+}
+
+/* Disconnected reupload button on the left */
+.chat-reupload-btn-disconnected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.8rem;
+  height: 3.8rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+/* Light theme specific styling */
+[data-theme="light"] .chat-reupload-btn-disconnected {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="light"] .chat-reupload-btn-disconnected:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 
+    0 6px 25px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.chat-reupload-btn-disconnected:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  transform: scale(1.05);
+}
+
+/* Chat input container with start analysis and send buttons */
+.chat-input-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border-radius: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  flex: 1;
+  min-height: 3.5rem;
+  animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+}
+
+/* Light theme specific styling for chat input container */
+[data-theme="light"] .chat-input-container {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* Upload UI styles migrated from HomePage.css */
+.homepage-upload-only {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 2rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+  backdrop-filter: blur(30px);
+  border: 1.5px dashed rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 0;
+  min-height: 3rem;
+  animation: slideInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Light theme specific styling for upload section */
+[data-theme="light"] .homepage-upload-only {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0.85) 100%
+  );
+  border: 1.5px dashed rgba(0, 0, 0, 0.15);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .homepage-upload-only:hover {
+  border-color: rgba(56, 224, 123, 0.6);
+  border-style: solid;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0.9) 100%
+  );
+  box-shadow: 
+    0 6px 25px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0 0 1px rgba(56, 224, 123, 0.2);
+}
+
+.homepage-upload-only::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(56, 224, 123, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+  border-radius: 2rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.homepage-upload-only:hover::before {
+  opacity: 1;
+}
+
+.homepage-upload-only:hover {
+  border-color: rgba(56, 224, 123, 0.4);
+  border-style: solid;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  box-shadow: 
+    0 6px 25px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 0 0 1px rgba(56, 224, 123, 0.1);
+  transform: translateY(-1px) scale(1.005);
+}
+
+.homepage-upload-only.uploading {
+  border-color: rgba(56, 224, 123, 0.8);
+  background: linear-gradient(
+    135deg,
+    rgba(56, 224, 123, 0.2) 0%,
+    rgba(56, 224, 123, 0.1) 30%,
+    rgba(56, 224, 123, 0.15) 70%,
+    rgba(56, 224, 123, 0.08) 100%
+  );
+  animation: pulse-upload 1.5s infinite, shimmer-upload 3s infinite;
+  min-height: 3.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.homepage-upload-only.uploading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  animation: upload-sweep 2s infinite;
+}
+
+@keyframes upload-sweep {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes shimmer-upload {
+  0%, 100% {
+    background: linear-gradient(
+      135deg,
+      rgba(56, 224, 123, 0.2) 0%,
+      rgba(56, 224, 123, 0.1) 30%,
+      rgba(56, 224, 123, 0.15) 70%,
+      rgba(56, 224, 123, 0.08) 100%
+    );
+  }
+  50% {
+    background: linear-gradient(
+      135deg,
+      rgba(56, 224, 123, 0.25) 0%,
+      rgba(56, 224, 123, 0.15) 30%,
+      rgba(56, 224, 123, 0.2) 70%,
+      rgba(56, 224, 123, 0.12) 100%
+    );
+  }
+}
+
+@keyframes pulse-upload {
+  0%, 100% {
+    box-shadow: 
+      0 10px 30px -10px rgba(56, 224, 123, 0.3),
+      0 0 0 0 rgba(56, 224, 123, 0.2),
+      inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 
+      0 15px 40px -5px rgba(56, 224, 123, 0.5),
+      0 0 30px rgba(56, 224, 123, 0.4),
+      0 0 0 4px rgba(56, 224, 123, 0.1),
+      inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    transform: scale(1.01);
+  }
+}
+
+.homepage-upload-details {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Enhanced upload button styling */
+.homepage-file-upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  backdrop-filter: blur(10px);
+  color: var(--text-primary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.homepage-file-upload-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.homepage-file-upload-btn:hover::before {
+  transform: translateX(100%);
+}
+
+.homepage-file-upload-btn:hover {
+  transform: translateY(-1px) scale(1.05);
+  border-color: rgba(255, 255, 255, 0.25);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Light theme specific styling for upload button */
+[data-theme="light"] .homepage-file-upload-btn {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.7) 100%
+  );
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .homepage-file-upload-btn:hover {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.8) 100%
+  );
+  box-shadow: 
+    0 4px 15px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.homepage-file-upload-icon {
+  font-size: 1.125rem;
+  transition: all 0.3s ease;
+  z-index: 1;
+  position: relative;
+}
+
+.homepage-file-upload-btn:hover .homepage-file-upload-icon {
+  transform: scale(1.1);
+}
+
+.homepage-upload-text {
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+
+.homepage-upload-text.subtitle {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 400;
+  margin-bottom: 0;
+  opacity: 0.8;
+  text-align: center;
+}
+
+.homepage-upload-only:hover .homepage-upload-text {
+  color: var(--text-primary);
+}
+
+.homepage-upload-only:hover .homepage-upload-text.subtitle {
+  color: var(--text-secondary);
+  opacity: 1;
+}
+
+.homepage-upload-list {
+  width: 100%;
+}
+
+.homepage-upload-file-icon {
+  color: var(--primary-400);
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.homepage-upload-file-size {
+  color: var(--text-tertiary);
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+/* Drag and drop overlay effect */
+.homepage-upload-only.drag-over {
+  border: 2px dashed rgba(56, 224, 123, 0.6);
+  background: linear-gradient(
+    135deg,
+    rgba(56, 224, 123, 0.2) 0%,
+    rgba(56, 224, 123, 0.1) 100%
+  );
+  transform: scale(1.02);
+}
+
+.homepage-upload-only.drag-over .homepage-upload-text {
+  color: var(--primary-400);
+}
+
+/* Upload container wrapper */
+.homepage-upload-container {
+  position: relative;
+  width: 100%;
+  max-width: 56rem;
+  margin: 0 auto;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hide original upload content when overlay is active */
+.homepage-upload-container:has(.homepage-global-drop-overlay) .homepage-upload-only {
+  opacity: 0;
+}
+
+/* Global drop overlay styles - positioned over original container */
+.homepage-global-drop-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1.5rem;
+  background: linear-gradient(
+    135deg,
+    rgba(56, 224, 123, 0.15) 0%,
+    rgba(56, 224, 123, 0.08) 50%,
+    rgba(56, 224, 123, 0.12) 100%
+  );
+  backdrop-filter: var(--blur-lg);
+  border: 2px dashed rgba(56, 224, 123, 0.6);
+  z-index: 10;
+}
+
+.homepage-global-drop-overlay:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(56, 224, 123, 0.2) 0%,
+    rgba(56, 224, 123, 0.12) 50%,
+    rgba(56, 224, 123, 0.18) 100%
+  );
+  border-color: rgba(56, 224, 123, 0.8);
+}
+
+.homepage-global-drop-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.homepage-global-drop-icon {
+  font-size: 2rem;
+  color: var(--primary-400);
+  flex-shrink: 0;
+}
+
+.homepage-global-drop-text-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  text-align: left;
+}
+
+.homepage-global-drop-text {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.homepage-global-drop-subtext {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .homepage-features-grid {
+    gap: 1rem;
+  }
+  
+  .homepage-feature-card {
+    padding: 1rem;
+  }
+  
+  .homepage-feature-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+  
+  .homepage-feature-icon-symbol {
+    font-size: 1.5rem;
+  }
+  
+  .homepage-title {
+    font-size: 1.875rem;
+  }
+  
+  .homepage-subtitle {
+    font-size: 1rem;
+  }
+  
+  .homepage-file-upload-btn {
+    width: 3rem;
+    height: 3rem;
+  }
+  
+  .homepage-file-upload-icon {
+    font-size: 1.5rem;
+  }
+  
+  .homepage-upload-text {
+    font-size: 0.9rem;
+  }
+  
+  .homepage-global-drop-overlay {
+    min-height: 100px;
+  }
+  
+  .homepage-global-drop-icon {
+    font-size: 2rem;
+  }
+  
+  .homepage-global-drop-text {
+    font-size: 1.125rem;
+  }
+  
+  .homepage-global-drop-subtext {
+    font-size: 0.9rem;
+  }
+  
+  .homepage-upload-only {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+  }
+}
+
+.chat-input-container:focus-within {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.chat-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1rem;
+  outline: none;
+  min-height: 1.25rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.chat-input:disabled {
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+
+.chat-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 400;
+}
+
+.chat-input:disabled::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Light theme specific styling for chat input */
+[data-theme="light"] .chat-input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="light"] .chat-input:disabled {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] .chat-input:disabled::placeholder {
+  color: rgba(0, 0, 0, 0.2);
+}
+
+/* Start analysis button inside chat container */
+.chat-input-container .chat-action-analysis {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(56, 224, 123, 0.2);
+  background: rgba(56, 224, 123, 0.05);
+  color: rgba(56, 224, 123, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.chat-input-container .chat-action-analysis:hover {
+  border-color: rgba(56, 224, 123, 0.3);
+  background: rgba(56, 224, 123, 0.08);
+  color: rgba(56, 224, 123, 1);
+}
+
+.chat-input-container .chat-action-analysis .material-symbols-outlined {
+  font-size: 0.75rem;
+}
+
+/* Light theme specific styling for start analysis button */
+[data-theme="light"] .chat-input-container .chat-action-analysis {
+  border: 1px solid rgba(56, 224, 123, 0.3);
+  background: rgba(56, 224, 123, 0.08);
+  color: rgba(22, 163, 74, 0.9);
+}
+
+[data-theme="light"] .chat-input-container .chat-action-analysis:hover {
+  border-color: rgba(56, 224, 123, 0.4);
+  background: rgba(56, 224, 123, 0.12);
+  color: rgba(22, 163, 74, 1);
+}
+
+.chat-submit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1a1a1a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  font-size: 1.125rem;
+}
+
+.chat-submit-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.05);
+}
+
+.chat-submit-btn:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  position: relative;
+}
+
+.chat-submit-btn-disabled {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 0.3) !important;
+  cursor: not-allowed !important;
+  opacity: 0.5;
+}
+
+.chat-submit-btn-disabled:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: none !important;
+}
+
+/* Light theme specific styling for submit button */
+[data-theme="light"] .chat-submit-btn {
+  background: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+}
+
+[data-theme="light"] .chat-submit-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+[data-theme="light"] .chat-submit-btn:disabled {
+  background: rgba(0, 0, 0, 0.1);
+  color: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] .chat-submit-btn-disabled {
+  background: rgba(0, 0, 0, 0.1) !important;
+  color: rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Header action buttons - minimal and sleek */
+.chat-header-actions .chat-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.75rem;
+  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  height: auto;
+}
+
+.chat-header-actions .chat-action-btn:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.chat-header-actions .chat-action-btn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.chat-header-actions .chat-action-btn:disabled:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  transform: none;
+}
+
+/* Light theme specific styling for disabled buttons */
+[data-theme="light"] .chat-header-actions .chat-action-btn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+  background: rgba(0, 0, 0, 0.08) !important;
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+[data-theme="light"] .chat-header-actions .chat-action-btn:disabled:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+  color: rgba(0, 0, 0, 0.6) !important;
+  transform: none;
+}
+
+.chat-header-actions .chat-action-btn .material-symbols-outlined {
+  font-size: 0.875rem;
+}
+
+/* Minimal header button colors */
+.chat-header-actions .chat-action-analysis {
+  color: rgba(56, 224, 123, 0.6);
+}
+
+.chat-header-actions .chat-action-analysis:hover {
+  background: rgba(56, 224, 123, 0.03);
+  color: rgba(56, 224, 123, 0.9);
+}
+
+.chat-header-actions .chat-action-examples {
+  color: rgba(103, 232, 249, 0.6);
+}
+
+.chat-header-actions .chat-action-examples:hover {
+  background: rgba(6, 182, 212, 0.03);
+  color: rgba(103, 232, 249, 0.9);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chat-interface {
+    padding: 0.75rem;
+  }
+  
+  .chat-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .chat-file-info {
+    max-width: none;
+    justify-content: center;
+  }
+  
+  .chat-input-container {
+    padding: 0.75rem;
+  }
+}

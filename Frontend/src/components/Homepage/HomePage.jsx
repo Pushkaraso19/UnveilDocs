@@ -1,16 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import ThemeToggle from '../ThemeToggle/ThemeToggle';
 import './HomePage.css';
+import Header from '../Header/Header';
+import Chat from '../Chat/Chat';
 
 const HomePage = () => {
-    const [question, setQuestion] = useState('');
     const [isUploading, setIsUploading] = useState(false);
     const [uploadedFiles, setUploadedFiles] = useState([]);
-    const [isInputFocused, setIsInputFocused] = useState(false);
-    const [showAccountDropdown, setShowAccountDropdown] = useState(false);
+    
+    const [isGlobalDragActive, setIsGlobalDragActive] = useState(false);
     const fileInputRef = useRef(null);
-    const accountDropdownRef = useRef(null);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
@@ -18,29 +16,79 @@ const HomePage = () => {
             setMousePosition({ x: e.clientX, y: e.clientY });
         };
 
-        // Close dropdown when clicking outside
-        const handleClickOutside = (event) => {
-            if (accountDropdownRef.current && !accountDropdownRef.current.contains(event.target)) {
-                setShowAccountDropdown(false);
+        // Global drag events for file overlay
+        let dragCounter = 0;
+        
+        const handleDragEnter = (e) => {
+            e.preventDefault();
+            // Check if the dragged item contains files
+            if (e.dataTransfer && e.dataTransfer.types && 
+                (e.dataTransfer.types.includes('Files') || e.dataTransfer.types.includes('application/x-moz-file'))) {
+                dragCounter++;
+                setIsGlobalDragActive(true);
+            }
+        };
+        
+        const handleDragOver = (e) => {
+            e.preventDefault();
+        };
+        
+        const handleDragLeave = (e) => {
+            e.preventDefault();
+            dragCounter--;
+            if (dragCounter <= 0) {
+                setIsGlobalDragActive(false);
+                dragCounter = 0;
+            }
+        };
+        
+        const handleDrop = (e) => {
+            e.preventDefault();
+            setIsGlobalDragActive(false);
+            dragCounter = 0;
+        };
+
+        // Handle drag cancel and ensure proper cleanup
+        const handleDragEnd = (e) => {
+            setIsGlobalDragActive(false);
+            dragCounter = 0;
+        };
+
+        // Additional cleanup on mouse leave window
+        const handleMouseLeave = (e) => {
+            if (e.target === document.documentElement) {
+                setIsGlobalDragActive(false);
+                dragCounter = 0;
             }
         };
 
+        // Close dropdown when clicking outside
+        const handleClickOutside = (event) => {
+            // Handle any global click events if needed
+        };
+
+        // Add event listeners to document and window
+        document.addEventListener('dragenter', handleDragEnter);
+        document.addEventListener('dragover', handleDragOver);
+        document.addEventListener('dragleave', handleDragLeave);
+        document.addEventListener('drop', handleDrop);
+        document.addEventListener('dragend', handleDragEnd);
+        document.addEventListener('mouseleave', handleMouseLeave);
         window.addEventListener('mousemove', handleMouseMove);
-        document.addEventListener('mousedown', handleClickOutside);
+        // Remove the problematic event listener for now
+        // document.addEventListener('mousedown', handleClickOutside);
 
         return () => {
+            document.removeEventListener('dragenter', handleDragEnter);
+            document.removeEventListener('dragover', handleDragOver);
+            document.removeEventListener('dragleave', handleDragLeave);
+            document.removeEventListener('drop', handleDrop);
+            document.removeEventListener('dragend', handleDragEnd);
+            document.removeEventListener('mouseleave', handleMouseLeave);
             window.removeEventListener('mousemove', handleMouseMove);
-            document.removeEventListener('mousedown', handleClickOutside);
+            // document.removeEventListener('mousedown', handleClickOutside);
         };
     }, []);
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (question.trim()) {
-            console.log('Question submitted:', question);
-            setQuestion('');
-        }
-    };
 
     const handleFileUpload = (e) => {
         const files = e.target.files;
@@ -59,8 +107,12 @@ const HomePage = () => {
         }
     };
 
-    const handleAskExample = () => {
-        setQuestion("What's covered in my policy?");
+    const handleReupload = () => {
+        setUploadedFiles([]);
+    };
+
+    const handleStartAnalysis = () => {
+        console.log('Proceed with analysis');
     };
 
     const triggerFileInput = () => {
@@ -69,9 +121,7 @@ const HomePage = () => {
         }
     };
 
-    const toggleAccountDropdown = () => {
-        setShowAccountDropdown(!showAccountDropdown);
-    };
+    
 
     // Calculate gradient position based on mouse position
     const gradientStyle = {
@@ -80,6 +130,16 @@ const HomePage = () => {
                 rgba(6, 182, 212, 0.1) 30%, 
                 rgba(99, 102, 241, 0.05) 60%, 
                 transparent 100%)`
+    };
+
+    // Ref for the upload-only file input
+    const uploadOnlyFileInputRef = useRef(null);
+
+    // Handler to trigger file input for upload-only area
+    const triggerUploadOnlyFileInput = () => {
+        if (uploadOnlyFileInputRef.current && !isUploading) {
+            uploadOnlyFileInputRef.current.click();
+        }
     };
 
     return (
@@ -107,51 +167,7 @@ const HomePage = () => {
 
             {/* Main content container */}
             <div className="homepage-main-container">
-                {/* Header */}
-                <header className="homepage-header">
-                    <div className="homepage-logo-container">
-                        <div className="homepage-logo-container-enhanced">
-                            <svg className="homepage-logo-icon" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                                <path clipRule="evenodd" d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z" fill="currentColor" fillRule="evenodd"></path>
-                            </svg>
-                        </div>
-                        <h2 className="homepage-logo-text">UnveilDocs</h2>
-                    </div>
-                    <div className="homepage-nav-container">
-                        <div className="homepage-nav-actions">
-                            <ThemeToggle className="compact" />
-                            <div className="homepage-account-container" ref={accountDropdownRef}>
-                                <button
-                                    className="homepage-account-btn"
-                                    onClick={toggleAccountDropdown}
-                                    aria-expanded={showAccountDropdown}
-                                    aria-label="Account menu"
-                                >
-                                    <span className="material-symbols-outlined">account_circle</span>
-                                </button>
-
-                                {showAccountDropdown && (
-                                    <div className="homepage-account-dropdown glassmorphism-card">
-                                        <div className="homepage-account-dropdown-item">
-                                            <span className="material-symbols-outlined">manage_accounts</span>
-                                            <span>My Account</span>
-                                        </div>
-                                        <div className="homepage-account-dropdown-item">
-                                            <span className="material-symbols-outlined">support_agent</span>
-                                            <span>Contact Us</span>
-                                        </div>
-
-                                        <div className="homepage-account-dropdown-item">
-                                            <span className="material-symbols-outlined">logout</span>
-                                            <span>Logout</span>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </header>
-
+                <Header />
                 {/* Main content */}
                 <main className="homepage-main">
                     <div className="homepage-content">
@@ -165,132 +181,55 @@ const HomePage = () => {
                         </div>
 
                         <div className="homepage-features-grid">
-                            {/* Feature card 1 - Upload Documents */}
+                            {/* Feature card 1 - Smart Document Summarization */}
                             <div className="homepage-feature-card glassmorphism-card" onClick={triggerFileInput}>
                                 <div className="homepage-feature-card-bg"></div>
                                 <div className="homepage-feature-icon">
-                                    <span className="material-symbols-outlined homepage-feature-icon-symbol">upload_file</span>
+                                    <span className="material-symbols-outlined homepage-feature-icon-symbol">summarize</span>
                                 </div>
-                                <h3 className="homepage-feature-title">Upload Documents</h3>
-                                <p className="homepage-feature-description">Easily upload your legal documents in PDF or DOCX format for AI-powered analysis.</p>
-
-                                <button className="homepage-feature-button">
-                                    <span>Select files</span>
-                                    <input
-                                        ref={fileInputRef}
-                                        type="file"
-                                        className="hidden"
-                                        multiple
-                                        accept=".pdf,.docx"
-                                        onChange={handleFileUpload}
-                                        disabled={isUploading}
-                                    />
-                                </button>
+                                <h3 className="homepage-feature-title">Summarize Legal Documents</h3>
+                                <p className="homepage-feature-description">Get concise, AI-generated summaries of lengthy contracts, agreements, and policies in seconds.</p>
+                                {/* Action removed for minimalist look */}
                             </div>
 
-                            {/* Feature card 2 - Ask Questions */}
+                            {/* Feature card 2 - Clause & Risk Detection */}
                             <div className="homepage-feature-card glassmorphism-card">
                                 <div className="homepage-feature-card-bg homepage-feature-card-bg-cyan"></div>
                                 <div className="homepage-feature-icon homepage-feature-icon-cyan">
-                                    <span className="material-symbols-outlined homepage-feature-icon-symbol homepage-feature-icon-symbol-cyan">psychology</span>
+                                    <span className="material-symbols-outlined homepage-feature-icon-symbol homepage-feature-icon-symbol-cyan">gavel</span>
                                 </div>
-                                <h3 className="homepage-feature-title">Ask Questions</h3>
-                                <p className="homepage-feature-description">Use natural language to ask questions about your documents and get instant insights.</p>
-
-                                <button
-                                    onClick={handleAskExample}
-                                    className="homepage-feature-button homepage-feature-button-cyan"
-                                >
-                                    Try an example
-                                </button>
+                                <h3 className="homepage-feature-title">Detect Key Clauses & Risks</h3>
+                                <p className="homepage-feature-description">Automatically highlight important clauses, obligations, and potential risks in your documents.</p>
+                                {/* Action removed for minimalist look */}
                             </div>
 
-                            {/* Feature card 3 - Get Instant Answers */}
+                            {/* Feature card 3 - Instant Q&A & Insights */}
                             <div className="homepage-feature-card glassmorphism-card">
                                 <div className="homepage-feature-card-bg homepage-feature-card-bg-indigo"></div>
                                 <div className="homepage-feature-icon homepage-feature-icon-indigo">
-                                    <span className="material-symbols-outlined homepage-feature-icon-symbol homepage-feature-icon-symbol-indigo">auto_awesome</span>
+                                    <span className="material-symbols-outlined homepage-feature-icon-symbol homepage-feature-icon-symbol-indigo">question_answer</span>
                                 </div>
-                                <h3 className="homepage-feature-title">Get Instant Answers</h3>
-                                <p className="homepage-feature-description">Receive quick and accurate responses with detailed analysis and explanations.</p>
-
-                                <div className="homepage-feature-timing">
-                                    <span className="material-symbols-outlined homepage-feature-timing-icon">schedule</span>
-                                    <span>Typically responds in seconds</span>
-                                </div>
+                                <h3 className="homepage-feature-title">Ask Anything, Get Answers</h3>
+                                <p className="homepage-feature-description">Type your questions and receive instant, context-aware answers about your legal documents.</p>
+                                {/* Action removed for minimalist look */}
                             </div>
                         </div>
                     </div>
-
-                    
-{/* Dynamic Footer */}
-                    <div
-                        className={`homepage-upload-only glassmorphism-enhanced ${isUploading ? 'uploading' : ''}`}
-                        onDragOver={(e) => e.preventDefault()}
-                        onDrop={(e) => {
-                            e.preventDefault();
-                            handleFileUpload({ target: { files: e.dataTransfer.files } });
-                        }}
-                    >
-                        <label className={`homepage-file-upload-btn ${isUploading ? 'uploading' : ''}`}>
-                            {!isUploading && (
-                                <span className="material-symbols-outlined homepage-file-upload-icon">upload_file</span>
-                            )}
-                            <input
-                                type="file"
-                                className="hidden"
-                                multiple
-                                accept=".pdf,.docx"
-                                onChange={handleFileUpload}
-                                disabled={isUploading}
-                            />
-                        </label>
-
-                        <div className="homepage-upload-details">
-                            {isUploading && (
-                                <span className="homepage-upload-text">Uploading...</span>
-                            )}
-
-                            {!isUploading && uploadedFiles.length === 0 && (
-                                <span className="homepage-upload-text">
-                                    Drag & drop or click to upload PDF/DOCX
-                                </span>
-                            )}
-
-                            {!isUploading && uploadedFiles.length > 0 && (
-                                <div className="homepage-upload-list">
-                                    <div className="homepage-upload-header">
-                                        <span className="homepage-upload-count">
-                                            {uploadedFiles.length} file{uploadedFiles.length !== 1 ? 's' : ''} uploaded
-                                        </span>
-                                        <button
-                                            onClick={() => setUploadedFiles([])}
-                                            className="homepage-upload-clear"
-                                        >
-                                            Clear all
-                                        </button>
-                                    </div>
-
-                                    <div className="homepage-upload-files">
-                                        {uploadedFiles.map((file, index) => (
-                                            <div key={index} className="homepage-upload-file">
-                                                <span className="material-symbols-outlined homepage-upload-file-icon">
-                                                    {file.type.includes("pdf") ? "picture_as_pdf" : "description"}
-                                                </span>
-                                                <span className="homepage-upload-file-name">{file.name}</span>
-                                                <span className="homepage-upload-file-size">
-                                                    {Math.round(file.size / 1024)} KB
-                                                </span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
                 </main>
-                
             </div>
+            
+            {/* Chat Component - renders when files are uploaded */}
+            <Chat 
+                uploadedFiles={uploadedFiles}
+                onReupload={handleReupload}
+                onStartAnalysis={handleStartAnalysis}
+                isUploading={isUploading}
+                triggerUploadOnlyFileInput={triggerUploadOnlyFileInput}
+                uploadOnlyFileInputRef={uploadOnlyFileInputRef}
+                handleFileUpload={handleFileUpload}
+                isGlobalDragActive={isGlobalDragActive}
+                setIsGlobalDragActive={setIsGlobalDragActive}
+            />
         </div>
     );
 };

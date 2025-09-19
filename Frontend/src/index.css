@@ -1,3 +1,129 @@
+/* Sleek & Minimalist Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 7px;
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(56, 224, 123, 0.35); /* soft accent */
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(56, 224, 123, 0.08);
+  transition: background 0.2s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 224, 123, 0.6);
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(56, 224, 123, 0.35) transparent;
+}
+:root {
+  --primary-color: #14b8a6;
+  --primary-500: #38e07b;
+  --primary-400: #65e89a;
+  --primary-300: #4ade80;
+  --primary-100: #d7f9e3;
+  --secondary-500: #06b6d4;
+  --secondary-400: #22d3ee;
+  --indigo-500: #6366f1;
+  --indigo-400: #818cf8;
+  --neutral-900: #111714;
+  --neutral-800: #1d2822;
+  --neutral-700: #29382f;
+  --neutral-400: #9eb7a8;
+  --neutral-100: #e8edea;
+  /* Theme variables */
+  --bg-primary: var(--neutral-900);
+  --bg-secondary: var(--neutral-800);
+  --bg-glass: rgba(255, 255, 255, 0.05);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-tertiary: rgba(255, 255, 255, 0.5);
+  --border-primary: rgba(255, 255, 255, 0.1);
+  --border-secondary: rgba(255, 255, 255, 0.2);
+  --gradient-primary: linear-gradient(to right, var(--primary-500), var(--primary-400));
+  --gradient-secondary: linear-gradient(to right, var(--secondary-500), var(--secondary-400));
+  --gradient-accent: linear-gradient(to right, var(--primary-400), var(--secondary-400));
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 30px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-accent: 0 10px 25px -3px rgba(56, 224, 123, 0.3);
+  --blur-sm: blur(10px);
+  --blur-md: blur(20px);
+  --blur-lg: blur(40px);
+}
+
+body {
+  font-family: 'Inter', 'Spline Sans', 'Noto Sans', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+h1, h2, h3 {
+  letter-spacing: -0.02em;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-20px) translateX(10px); }
+}
+
+@keyframes float-medium {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-15px) translateX(-15px); }
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes pulse-medium {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+* {
+  transition-property: color, background-color, border-color, transform, box-shadow, opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+
+/* Material icons styling */
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24;
+}
+
+/* Global glassmorphism utility */
+.glassmorphism-enhanced {
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
+  backdrop-filter: var(--blur-lg);
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-lg);
+}
+
+.glassmorphism-card {
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.1));
+  backdrop-filter: var(--blur-lg);
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-lg);
+  transition: all 0.3s ease;
+}
+
+.glassmorphism-card:hover {
+  box-shadow: 0 25px 50px -12px rgba(56, 224, 123, 0.1);
+  border-color: rgba(56, 224, 123, 0.3);
+}
 /* Global reset and base styles */
 * {
   margin: 0;
@@ -9,15 +135,23 @@ html {
   font-family: "Spline Sans", "Noto Sans", sans-serif;
   letter-spacing: -0.01em;
   line-height: 1.5;
+  height: 100vh;
+  overflow: hidden;
 }
 
 body {
   margin: 0;
   padding: 0;
-  min-height: 100vh;
+  height: 100vh;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow: hidden;
+}
+
+#root {
+  height: 100vh;
+  overflow: hidden;
 }
 
 :root {
