@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import sampleDocument from '../../assets/sample_document.pdf';
 import './Chat.css';
 import ReuploadConfirmModal from './ReuploadConfirmModal';
 
-const Chat = ({ uploadedFiles, onReupload, onStartAnalysis, isUploading, triggerUploadOnlyFileInput, uploadOnlyFileInputRef, handleFileUpload, isGlobalDragActive, setIsGlobalDragActive  }) => {
+const Chat = ({ uploadedFiles, onReupload, onStartAnalysis, onBackFromAnalysis, isUploading, isAnalyzing, showAnalysis, analysisResult, triggerUploadOnlyFileInput, uploadOnlyFileInputRef, handleFileUpload, isGlobalDragActive, setIsGlobalDragActive  }) => {
     const [question, setQuestion] = useState('');
     const [showReuploadModal, setShowReuploadModal] = useState(false);
 
@@ -14,14 +15,16 @@ const Chat = ({ uploadedFiles, onReupload, onStartAnalysis, isUploading, trigger
         }
     };
 
-    const handleAskExample = () => {
-        // Load example document
-        const exampleFile = new File(
-            ['Example legal document content'], 
-            'sample-contract.pdf', 
-            { type: 'application/pdf' }
-        );
-        handleFileUpload({ target: { files: [exampleFile] } });
+    const handleAskExample = async () => {
+        // Fetch the actual sample PDF from assets and create a File object
+        try {
+            const response = await fetch(sampleDocument);
+            const blob = await response.blob();
+            const exampleFile = new File([blob], 'sample_document.pdf', { type: 'application/pdf' });
+            handleFileUpload({ target: { files: [exampleFile] } });
+        } catch (err) {
+            console.error('Failed to load example PDF:', err);
+        }
     };
 
     const handleReupload = (e) => {
@@ -179,13 +182,19 @@ const Chat = ({ uploadedFiles, onReupload, onStartAnalysis, isUploading, trigger
                             onKeyPress={(e) => e.key === 'Enter' && e.preventDefault()}
                             disabled={true}
                         />
-                        <button 
-                            className="chat-action-btn chat-action-analysis"
-                            onClick={handleStartAnalysis}
-                        >
-                            <span className="material-symbols-outlined">auto_awesome</span>
-                            Start Analysis
-                        </button>
+                        {/* Only show action button when there are files but no analysis results displayed */}
+                        {uploadedFiles.length > 0 && !analysisResult && (
+                            <button 
+                                className={`chat-action-btn chat-action-analysis`}
+                                onClick={handleStartAnalysis}
+                                disabled={isAnalyzing}
+                            >
+                                <span className="material-symbols-outlined">
+                                    auto_awesome
+                                </span>
+                                {isAnalyzing ? 'Analyzing...' : 'Start Analysis'}
+                            </button>
+                        )}
                         <button
                             onClick={handleSubmit}
                             className="chat-submit-btn chat-submit-btn-disabled"

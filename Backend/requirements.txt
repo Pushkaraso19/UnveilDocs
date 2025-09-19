@@ -1,0 +1,32 @@
+# Flask and web server dependencies
+Flask==3.0.0
+flask-cors==4.0.0
+gunicorn==21.2.0
+
+# Google Cloud AI dependencies
+google-cloud-aiplatform==1.38.1
+google-generativeai==0.3.2
+google-cloud-documentai==2.20.1
+google-cloud-storage==2.10.0
+
+# Document processing
+PyPDF2==3.0.1
+python-docx==1.1.0
+pdfplumber==0.10.0
+python-magic==0.4.27
+
+# Data processing and utilities
+pandas==2.1.4
+numpy==1.25.2
+python-dotenv==1.0.0
+requests==2.31.0
+
+# Logging and monitoring
+structlog==23.2.0
+
+# File handling
+Werkzeug==3.0.1
+
+# Text processing
+nltk==3.8.1
+spacy==3.7.2

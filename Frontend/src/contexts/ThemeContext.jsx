@@ -6,43 +6,39 @@ const ThemeContext = createContext();
 // Theme Provider Component
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    // Use user preference if set, otherwise system preference
     const savedTheme = localStorage.getItem('unveildocs-theme');
     if (savedTheme === 'dark' || savedTheme === 'light') {
       return savedTheme;
     }
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    return prefersDark ? 'dark' : 'light';
+    // Default to dark theme
+    return 'dark';
   });
 
-  // Apply theme to document
   useEffect(() => {
     const root = document.documentElement;
     if (theme === 'light') {
       root.setAttribute('data-theme', 'light');
     } else {
-      root.removeAttribute('data-theme');
+      root.setAttribute('data-theme', 'dark');
     }
     localStorage.setItem('unveildocs-theme', theme);
   }, [theme]);
 
-  // Listen for system theme changes only if user hasn't manually set a preference
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e) => {
       const savedTheme = localStorage.getItem('unveildocs-theme');
       if (savedTheme !== 'dark' && savedTheme !== 'light') {
-        setTheme(e.matches ? 'dark' : 'light');
+        // Default to dark theme even when system preference changes
+        setTheme('dark');
       }
     };
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
-  // Allow user to manually toggle theme
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === 'dark' ? 'light' : 'dark');
-    // Save user preference
     localStorage.setItem('unveildocs-theme', theme === 'dark' ? 'light' : 'dark');
   };
 

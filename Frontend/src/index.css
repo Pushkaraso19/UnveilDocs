@@ -15,9 +15,23 @@
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* Light theme scrollbar */
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(5, 150, 105, 0.3);
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.1);
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(5, 150, 105, 0.5);
+}
+
 html {
   scrollbar-width: thin;
   scrollbar-color: rgba(56, 224, 123, 0.35) transparent;
+}
+
+[data-theme="light"] html {
+  scrollbar-color: rgba(5, 150, 105, 0.3) transparent;
 }
 :root {
   --primary-color: #14b8a6;
@@ -90,9 +104,25 @@ h1, h2, h3 {
 }
 
 * {
-  transition-property: color, background-color, border-color, transform, box-shadow, opacity;
+  transition-property: color, background-color, border-color, transform, box-shadow, opacity, backdrop-filter;
   transition-duration: 0.3s;
-  transition-timing-function: ease-in-out;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Enhanced transitions for theme switching */
+body, 
+[data-theme="light"], 
+[data-theme="dark"] {
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth transitions for all theme-aware elements */
+.homepage-bg,
+.homepage-main-container,
+.chat-interface,
+.theme-toggle-inner,
+.homepage-header {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Material icons styling */
@@ -202,34 +232,49 @@ body {
 
 /* Light theme variables */
 [data-theme="light"] {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
-  --bg-tertiary: #f1f5f9;
-  --bg-glass: rgba(255, 255, 255, 0.7);
-  --bg-glass-hover: rgba(255, 255, 255, 0.9);
+  --bg-primary: #fafbfc;
+  --bg-secondary: #f4f6f8;
+  --bg-tertiary: #edf1f5;
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  --bg-glass-hover: rgba(255, 255, 255, 0.95);
+  --bg-card: rgba(249, 250, 251, 0.9);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
   
-  --text-primary: #1e293b;
-  --text-secondary: #475569;
-  --text-tertiary: #64748b;
-  --text-muted: #94a3b8;
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --text-tertiary: #6b7280;
+  --text-muted: #9ca3af;
+  --text-accent: #047857;
   
-  --border-primary: rgba(148, 163, 184, 0.3);
-  --border-secondary: rgba(148, 163, 184, 0.5);
-  --border-accent: rgba(56, 224, 123, 0.5);
+  --border-primary: rgba(209, 213, 219, 0.6);
+  --border-secondary: rgba(156, 163, 175, 0.4);
+  --border-accent: rgba(5, 150, 105, 0.3);
+  --border-hover: rgba(5, 150, 105, 0.5);
   
-  --shadow-sm: 0 4px 30px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-  --shadow-accent: 0 25px 50px -12px rgba(56, 224, 123, 0.2);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-accent: 0 25px 50px -12px rgba(5, 150, 105, 0.15);
+  --shadow-card: 0 4px 16px -4px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 25px 50px -12px rgba(5, 150, 105, 0.12), 0 8px 20px -4px rgba(5, 150, 105, 0.08);
   
-  --blur-sm: blur(10px);
-  --blur-md: blur(20px);
-  --blur-lg: blur(40px);
+  --blur-sm: blur(12px);
+  --blur-md: blur(24px);
+  --blur-lg: blur(48px);
   
-  /* Gradient colors for light theme */
-  --gradient-primary: radial-gradient(circle farthest-side, rgba(56, 224, 123, 0.1), rgba(255, 255, 255, 0));
-  --gradient-secondary: radial-gradient(circle farthest-side, rgba(20, 184, 166, 0.08), rgba(255, 255, 255, 0));
-  --gradient-accent: linear-gradient(to right, var(--primary-500), var(--primary-400));
+  /* Enhanced gradient colors for light theme */
+  --gradient-primary: linear-gradient(135deg, #047857 0%, #059669 50%, #0d9488 100%);
+  --gradient-secondary: linear-gradient(135deg, #0891b2 0%, #06b6d4 50%, #22d3ee 100%);
+  --gradient-accent: linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, rgba(13, 148, 136, 0.05) 100%);
+  --gradient-bg: linear-gradient(145deg, rgba(249, 250, 251, 0.8) 0%, rgba(243, 244, 246, 0.6) 100%);
+  
+  /* Color palette extensions */
+  --accent-color: #059669;
+  --accent-rgb: 5, 150, 105;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --error-color: #ef4444;
+  --info-color: #3b82f6;
 }
 
 @keyframes float-slow {

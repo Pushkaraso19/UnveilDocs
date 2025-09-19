@@ -1,5 +1,48 @@
 /* HomePage specific styles start here */
 
+/* Error notification */
+.error-notification {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(220, 38, 38, 0.9) 100%);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.2);
+  animation: slideInFromTop 0.3s ease-out;
+  max-width: 90vw;
+  word-wrap: break-word;
+}
+
+.error-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.error-content .material-symbols-outlined {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 .homepage-bg {
   position: absolute;
   inset: 0;
@@ -854,3 +897,255 @@
   animation: spin 1s linear infinite;
 }
 
+/* Insights Integration Styles */
+.insights-main {
+  height: calc(100vh - 150px); /* Increased space for chat bar */
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+/* Custom scrollbar for insights main (full width) */
+.insights-main::-webkit-scrollbar {
+  width: 8px;
+}
+
+.insights-main::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.insights-main::-webkit-scrollbar-thumb {
+  background: rgba(var(--accent-rgb), 0.3);
+  border-radius: 4px;
+}
+
+.insights-main::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--accent-rgb), 0.5);
+}
+
+.insights-scrollable-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem 120px 1rem; /* Increased bottom padding for chat space */
+}
+
+/* Override LegalInsights container styles when embedded */
+.insights-scrollable-container .legal-insights-container {
+  min-height: auto;
+  height: 100% !important; /* Make container fill available space */
+  max-height: 100% !important; /* But don't exceed it */
+  position: relative;
+  background: transparent;
+  overflow: hidden; /* Ensure content doesn't leak beyond container */
+}
+
+.insights-scrollable-container .legal-insights-content {
+  position: relative;
+  z-index: 1;
+  height: 100%; /* Fill container height */
+  max-height: 100%; /* But don't exceed it */
+}
+
+.insights-scrollable-container .legal-insights-main {
+  padding: 1rem;
+  height: 100% !important; /* Force height to respect parent container */
+  max-height: 100% !important; /* Prevent overflow beyond parent */
+  overflow-y: auto !important; /* Enable scrolling within constrained height */
+  overflow-x: hidden !important; /* Prevent horizontal overflow */
+}
+
+.insights-scrollable-container .legal-insights-main-container {
+  max-width: 56rem;
+  padding: 0;
+  margin: 0 auto; /* Center the insights content */
+}
+
+/* Ensure proper spacing for insights cards */
+.insights-scrollable-container .legal-insights-card {
+  margin-bottom: 1.5rem;
+}
+
+.insights-scrollable-container .legal-insights-grid {
+  gap: 1.5rem;
+}
+
+/* Center align insights content */
+.insights-scrollable-container .legal-insights-embedded-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Mobile responsive styles for insights integration */
+@media (max-width: 768px) {
+  .insights-scrollable-container .legal-insights-main {
+    padding: 0.75rem;
+  }
+}
+
+/* ========================================
+   LIGHT THEME HOMEPAGE STYLES
+   ======================================== */
+
+/* Light theme background */
+[data-theme="light"] .homepage-bg {
+  background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(5, 150, 105, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(13, 148, 136, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.03) 0%, transparent 50%);
+}
+
+/* Light theme gradients */
+[data-theme="light"] .homepage-bg-gradient-1 {
+  background-color: rgba(5, 150, 105, 0.08);
+  filter: blur(120px);
+}
+
+[data-theme="light"] .homepage-bg-gradient-2 {
+  background-color: rgba(13, 148, 136, 0.06);
+  filter: blur(100px);
+}
+
+[data-theme="light"] .homepage-bg-gradient-3 {
+  background-color: rgba(6, 182, 212, 0.05);
+  filter: blur(100px);
+}
+
+[data-theme="light"] .homepage-bg-gradient-4 {
+  background-color: rgba(5, 150, 105, 0.04);
+  filter: blur(80px);
+}
+
+/* Light theme main content */
+[data-theme="light"] .homepage-main-container {
+  background: transparent;
+}
+
+[data-theme="light"] .homepage-main {
+  background: transparent;
+}
+
+/* Light theme upload section */
+
+[data-theme="light"] .homepage-upload-title {
+  color: var(--text-primary);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="light"] .homepage-upload-subtitle {
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .homepage-upload-description {
+  color: var(--text-tertiary);
+}
+
+/* Light theme upload area */
+[data-theme="light"] .homepage-upload-area {
+  background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-glass) 100%);
+  border: 2px dashed var(--border-primary);
+  backdrop-filter: var(--blur-sm);
+}
+
+[data-theme="light"] .homepage-upload-area:hover {
+  background: linear-gradient(145deg, var(--bg-card-hover) 0%, var(--bg-glass-hover) 100%);
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-accent);
+}
+
+[data-theme="light"] .homepage-upload-area.drag-over {
+  border-color: var(--accent-color);
+  background: linear-gradient(145deg, rgba(5, 150, 105, 0.05) 0%, rgba(5, 150, 105, 0.02) 100%);
+  box-shadow: 0 0 30px rgba(5, 150, 105, 0.2);
+}
+
+/* Light theme upload icon and text */
+[data-theme="light"] .homepage-upload-icon {
+  color: var(--accent-color);
+}
+
+[data-theme="light"] .homepage-upload-text {
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .homepage-upload-subtext {
+  color: var(--text-secondary);
+}
+
+/* Light theme feature cards */
+[data-theme="light"] .homepage-feature-card {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-primary);
+  backdrop-filter: var(--blur-md);
+  box-shadow: var(--shadow-card);
+}
+
+[data-theme="light"] .homepage-feature-card:hover {
+  background: var(--bg-glass-hover);
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+[data-theme="light"] .homepage-feature-icon {
+  color: var(--accent-color);
+  background: linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%);
+}
+
+[data-theme="light"] .homepage-feature-title {
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .homepage-feature-description {
+  color: var(--text-secondary);
+}
+
+/* Light theme buttons */
+[data-theme="light"] .homepage-button-primary {
+  background: var(--gradient-primary);
+  color: white;
+  border: 1px solid var(--accent-color);
+  box-shadow: var(--shadow-accent);
+}
+
+[data-theme="light"] .homepage-button-primary:hover {
+  box-shadow: 0 25px 50px -12px rgba(5, 150, 105, 0.25), 0 0 0 1px rgba(5, 150, 105, 0.1);
+  transform: translateY(-1px);
+}
+
+[data-theme="light"] .homepage-button-secondary {
+  background: var(--bg-glass);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  backdrop-filter: var(--blur-sm);
+}
+
+[data-theme="light"] .homepage-button-secondary:hover {
+  background: var(--bg-glass-hover);
+  border-color: var(--border-accent);
+  color: var(--accent-color);
+  box-shadow: var(--shadow-md);
+}
+
+/* Light theme loading states */
+[data-theme="light"] .homepage-loading-spinner {
+  border-top-color: var(--accent-color);
+  border-right-color: var(--accent-color);
+}
+
+[data-theme="light"] .homepage-loading-text {
+  color: var(--text-primary);
+}
+
+/* Light theme error notification */
+[data-theme="light"] .error-notification {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(220, 38, 38, 0.9) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  backdrop-filter: var(--blur-md);
+  box-shadow: 0 25px 50px -12px rgba(239, 68, 68, 0.3);
+}

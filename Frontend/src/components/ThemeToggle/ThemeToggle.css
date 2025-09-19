@@ -154,3 +154,69 @@
     height: 3rem;
   }
 }
+
+/* ========================================
+   ENHANCED LIGHT THEME TOGGLE STYLES
+   ======================================== */
+
+/* Light theme toggle button */
+[data-theme="light"] .theme-toggle-inner {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-primary);
+  backdrop-filter: var(--blur-md);
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="light"] .theme-toggle:hover .theme-toggle-inner {
+  background: var(--bg-glass-hover);
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme="light"] .theme-toggle-fade {
+  animation: theme-toggle-fade-light 0.7s cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes theme-toggle-fade-light {
+  0% {
+    box-shadow: var(--shadow-sm);
+    background: var(--bg-glass);
+    opacity: 1;
+  }
+  40% {
+    box-shadow: 0 0 20px 6px rgba(5, 150, 105, 0.2), var(--shadow-accent);
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.1) 0%, rgba(13, 148, 136, 0.08) 100%);
+    opacity: 0.9;
+  }
+  100% {
+    box-shadow: var(--shadow-md);
+    background: var(--bg-glass-hover);
+    opacity: 1;
+  }
+}
+
+/* Enhanced light theme floating toggle */
+[data-theme="light"] .theme-toggle.floating .theme-toggle-inner {
+  background: var(--bg-glass-hover);
+  border: 1px solid var(--border-primary);
+  backdrop-filter: var(--blur-lg);
+  box-shadow: var(--shadow-card);
+}
+
+[data-theme="light"] .theme-toggle.floating:hover .theme-toggle-inner {
+  background: rgba(255, 255, 255, 0.98);
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-accent);
+}
+
+/* Light theme icon styling */
+[data-theme="light"] .theme-toggle .material-symbols-outlined {
+  color: var(--accent-color);
+  text-shadow: 0 0 8px rgba(5, 150, 105, 0.3);
+}
+
+[data-theme="light"] .theme-toggle:hover .material-symbols-outlined {
+  color: #047857;
+  text-shadow: 0 0 12px rgba(5, 150, 105, 0.4);
+  transform: rotate(15deg);
+}

@@ -2,10 +2,17 @@ import React, { useState, useRef, useEffect } from 'react';
 import './HomePage.css';
 import Header from '../Header/Header';
 import Chat from '../Chat/Chat';
+import LegalInsights from '../LegalInsights/LegalInsights';
+import apiService from '../../services/apiService';
 
 const HomePage = () => {
     const [isUploading, setIsUploading] = useState(false);
     const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [documentText, setDocumentText] = useState('');
+    const [analysisResult, setAnalysisResult] = useState(null);
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const [showAnalysis, setShowAnalysis] = useState(false);
+    const [error, setError] = useState(null);
     
     const [isGlobalDragActive, setIsGlobalDragActive] = useState(false);
     const fileInputRef = useRef(null);
@@ -90,29 +97,96 @@ const HomePage = () => {
         };
     }, []);
 
-    const handleFileUpload = (e) => {
+    const handleFileUpload = async (e) => {
         const files = e.target.files;
         if (files.length > 0) {
+            const file = files[0]; // Take the first file
             setIsUploading(true);
-            setTimeout(() => {
-                const newFiles = Array.from(files).map(file => ({
-                    name: file.name,
-                    type: file.type,
-                    size: file.size
-                }));
-                setUploadedFiles([...uploadedFiles, ...newFiles]);
+            setError(null);
+            
+            try {
+                // Upload and process document with backend
+                const response = await apiService.uploadDocument(file);
+                
+                if (response.success) {
+                    const processedDoc = response.data;
+                    
+                    // Update state with processed document
+                    const newFile = {
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        originalFile: file,
+                        processedText: processedDoc.text,
+                        metadata: processedDoc.metadata
+                    };
+                    
+                    setUploadedFiles([newFile]);
+                    setDocumentText(processedDoc.text);
+                    setIsUploading(false);
+                    e.target.value = '';
+                    
+                    console.log('Document processed successfully:', {
+                        filename: file.name,
+                        textLength: processedDoc.text.length,
+                        metadata: processedDoc.metadata
+                    });
+                } else {
+                    throw new Error('Document processing failed');
+                }
+            } catch (error) {
+                console.error('File upload error:', error);
+                setError(`Upload failed: ${error.message}`);
                 setIsUploading(false);
                 e.target.value = '';
-            }, 1500);
+                
+                // Show error for a few seconds then hide
+                setTimeout(() => setError(null), 5000);
+            }
         }
     };
 
     const handleReupload = () => {
         setUploadedFiles([]);
+        setDocumentText('');
+        setAnalysisResult(null);
+        setShowAnalysis(false);
+        setError(null);
     };
 
-    const handleStartAnalysis = () => {
-        console.log('Proceed with analysis');
+    const handleStartAnalysis = async () => {
+        if (!documentText) {
+            setError('No document text available for analysis');
+            return;
+        }
+        
+        setIsAnalyzing(true);
+        setError(null);
+        
+        try {
+            console.log('Starting document analysis...');
+            
+            // Perform comprehensive analysis
+            const response = await apiService.analyzeDocument(documentText, 'comprehensive');
+            
+            if (response.success) {
+                setAnalysisResult(response.data);
+                setShowAnalysis(true);
+                console.log('Analysis completed successfully:', response.data);
+            } else {
+                throw new Error('Analysis failed');
+            }
+        } catch (error) {
+            console.error('Analysis error:', error);
+            setError(`Analysis failed: ${error.message}`);
+            setTimeout(() => setError(null), 5000);
+        } finally {
+            setIsAnalyzing(false);
+        }
+    };
+
+    const handleBackFromAnalysis = () => {
+        setShowAnalysis(false);
     };
 
     const triggerFileInput = () => {
@@ -144,26 +218,106 @@ const HomePage = () => {
 
     return (
         <div className="homepage-container">
-            {/* Enhanced Animated Background */}
-            <div className="homepage-bg">
-                {/* Animated gradient dots */}
-                <div className="homepage-bg-dots">
-                    <div className="homepage-bg-gradient-1"></div>
-                    <div className="homepage-bg-gradient-2"></div>
-                    <div className="homepage-bg-gradient-3"></div>
-                    <div className="homepage-bg-gradient-4"></div>
-                </div>
+            {/* Show LegalInsights when analysis is complete */}
+            {showAnalysis && analysisResult ? (
+                <>
+                    {/* Enhanced Animated Background */}
+                    <div className="homepage-bg">
+                        {/* Animated gradient dots */}
+                        <div className="homepage-bg-dots">
+                            <div className="homepage-bg-gradient-1"></div>
+                            <div className="homepage-bg-gradient-2"></div>
+                            <div className="homepage-bg-gradient-3"></div>
+                            <div className="homepage-bg-gradient-4"></div>
+                        </div>
 
-                {/* Grid pattern */}
-                <div className="homepage-bg-grid"></div>
+                        {/* Grid pattern */}
+                        <div className="homepage-bg-grid"></div>
 
-                {/* Interactive gradient that follows mouse */}
-                <div className="homepage-bg-mouse-gradient" style={gradientStyle}></div>
+                        {/* Interactive gradient that follows mouse */}
+                        <div className="homepage-bg-mouse-gradient" style={gradientStyle}></div>
 
-                {/* Moving gradient orbs */}
-                <div className="homepage-bg-floating-orb-1"></div>
-                <div className="homepage-bg-floating-orb-2"></div>
-            </div>
+                        {/* Moving gradient orbs */}
+                        <div className="homepage-bg-floating-orb-1"></div>
+                        <div className="homepage-bg-floating-orb-2"></div>
+                    </div>
+
+                    {/* Error notification */}
+                    {error && (
+                        <div className="error-notification">
+                            <div className="error-content">
+                                <span className="material-symbols-outlined">error</span>
+                                <span>{error}</span>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Main content container with fixed header and scrollable insights */}
+                    <div className="homepage-main-container">
+                        <Header />
+                        
+                        {/* Scrollable insights area */}
+                        <main className="homepage-main insights-main">
+                            <div className="insights-scrollable-container">
+                                <LegalInsights 
+                                    analysisData={analysisResult}
+                                    documentInfo={uploadedFiles[0]}
+                                    onBack={handleBackFromAnalysis}
+                                    documentText={documentText}
+                                />
+                            </div>
+                        </main>
+                    </div>
+                    
+                    {/* Chat Component - renders when files are uploaded */}
+                    <Chat 
+                        uploadedFiles={uploadedFiles}
+                        onReupload={handleReupload}
+                        onStartAnalysis={handleStartAnalysis}
+                        onBackFromAnalysis={handleBackFromAnalysis}
+                        isUploading={isUploading}
+                        isAnalyzing={isAnalyzing}
+                        showAnalysis={showAnalysis}
+                        analysisResult={analysisResult}
+                        triggerUploadOnlyFileInput={triggerUploadOnlyFileInput}
+                        uploadOnlyFileInputRef={uploadOnlyFileInputRef}
+                        handleFileUpload={handleFileUpload}
+                        isGlobalDragActive={isGlobalDragActive}
+                        setIsGlobalDragActive={setIsGlobalDragActive}
+                    />
+                </>
+            ) : (
+                <>
+                    {/* Enhanced Animated Background */}
+                    <div className="homepage-bg">
+                        {/* Animated gradient dots */}
+                        <div className="homepage-bg-dots">
+                            <div className="homepage-bg-gradient-1"></div>
+                            <div className="homepage-bg-gradient-2"></div>
+                            <div className="homepage-bg-gradient-3"></div>
+                            <div className="homepage-bg-gradient-4"></div>
+                        </div>
+
+                        {/* Grid pattern */}
+                        <div className="homepage-bg-grid"></div>
+
+                        {/* Interactive gradient that follows mouse */}
+                        <div className="homepage-bg-mouse-gradient" style={gradientStyle}></div>
+
+                        {/* Moving gradient orbs */}
+                        <div className="homepage-bg-floating-orb-1"></div>
+                        <div className="homepage-bg-floating-orb-2"></div>
+                    </div>
+
+                    {/* Error notification */}
+                    {error && (
+                        <div className="error-notification">
+                            <div className="error-content">
+                                <span className="material-symbols-outlined">error</span>
+                                <span>{error}</span>
+                            </div>
+                        </div>
+                    )}
 
             {/* Main content container */}
             <div className="homepage-main-container">
@@ -223,13 +377,19 @@ const HomePage = () => {
                 uploadedFiles={uploadedFiles}
                 onReupload={handleReupload}
                 onStartAnalysis={handleStartAnalysis}
+                onBackFromAnalysis={handleBackFromAnalysis}
                 isUploading={isUploading}
+                isAnalyzing={isAnalyzing}
+                showAnalysis={showAnalysis}
+                analysisResult={analysisResult}
                 triggerUploadOnlyFileInput={triggerUploadOnlyFileInput}
                 uploadOnlyFileInputRef={uploadOnlyFileInputRef}
                 handleFileUpload={handleFileUpload}
                 isGlobalDragActive={isGlobalDragActive}
                 setIsGlobalDragActive={setIsGlobalDragActive}
             />
+                </>
+            )}
         </div>
     );
 };
