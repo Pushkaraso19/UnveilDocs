@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import sampleDocument from '../../assets/sample_document.pdf';
+import sampleDocument from '../../assets/MASTER SERVICES AGREEMENT.pdf';
 import './Chat.css';
 import ReuploadConfirmModal from './ReuploadConfirmModal';
 
@@ -20,7 +20,7 @@ const Chat = ({ uploadedFiles, onReupload, onStartAnalysis, onBackFromAnalysis, 
         try {
             const response = await fetch(sampleDocument);
             const blob = await response.blob();
-            const exampleFile = new File([blob], 'sample_document.pdf', { type: 'application/pdf' });
+            const exampleFile = new File([blob], 'MASTER SERVICES AGREEMENT.pdf', { type: 'application/pdf' });
             handleFileUpload({ target: { files: [exampleFile] } });
         } catch (err) {
             console.error('Failed to load example PDF:', err);

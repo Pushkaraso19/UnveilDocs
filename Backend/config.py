@@ -37,6 +37,16 @@ class Config:
     @classmethod
     def validate(cls):
         """Validate required configuration."""
+        # In demo mode, we don't need real API keys
+        if cls.DEMO_MODE:
+            # Set demo values if not provided
+            if not cls.GOOGLE_CLOUD_PROJECT_ID:
+                cls.GOOGLE_CLOUD_PROJECT_ID = 'demo-project'
+            if not cls.GOOGLE_API_KEY:
+                cls.GOOGLE_API_KEY = 'demo-key'
+            return True
+        
+        # In production mode, validate required variables
         required_vars = [
             'GOOGLE_CLOUD_PROJECT_ID',
             'GOOGLE_API_KEY'

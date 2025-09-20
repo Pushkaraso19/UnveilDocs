@@ -32,7 +32,7 @@ try:
     if Config.DEMO_MODE:
         logger.warning("🚨 DEMO MODE ENABLED - Using mock AI responses (no API costs) 🚨")
         print("=" * 60)
-        print("🚨 DEMO MODE ENABLED 🚨")
+        print("DEMO MODE ENABLED ")
         print("All AI responses will be mock data to avoid API costs")
         print("Set DEMO_MODE=False in config to use real AI services")
         print("=" * 60)
