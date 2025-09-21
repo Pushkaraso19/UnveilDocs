@@ -16,12 +16,14 @@ UnveilDocs is a powerful AI-driven platform that transforms complex legal docume
 ## 🛠️ Tech Stack
 
 ### Backend
-- **Python 3.13** - Core backend language
-- **Flask** - Web framework
+- **Python 3.12+** - Core backend language (Compatible with all dependencies)
+- **Flask 3.0.0** - Web framework
 - **Google Gemini AI** - AI-powered document analysis
-- **Google Cloud AI** - Advanced AI capabilities
+- **Google Cloud AI Platform** - Advanced AI capabilities
 - **PyPDF2** - PDF text extraction
 - **python-docx** - Word document processing
+- **pdfplumber** - Advanced PDF processing
+- **spaCy & NLTK** - Natural language processing
 - **structlog** - Structured logging
 
 ### Frontend
@@ -57,7 +59,7 @@ UnveilDocs/
 
 ### Prerequisites
 
-- **Python 3.13+**
+- **Python 3.12+** (Recommended for compatibility with all dependencies)
 - **Node.js 18+**
 - **Google Cloud Account** with Gemini API access
 - **API Key** for Google Generative AI
@@ -77,6 +79,16 @@ cd Backend
 
 #### Install Dependencies
 ```bash
+# Create virtual environment (recommended)
+python -m venv venv
+
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On Unix/Linux/Mac:
+source venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
@@ -84,16 +96,24 @@ pip install -r requirements.txt
 Create a `.env` file in the Backend directory:
 
 ```env
-# Google AI Configuration
-GOOGLE_API_KEY=your_google_api_key_here
+# Google Cloud Configuration
 GOOGLE_CLOUD_PROJECT_ID=your_project_id
+GOOGLE_APPLICATION_CREDENTIALS=./service-account-key.json
 
-# Application Settings
-DEMO_MODE=False
-LOG_LEVEL=INFO
+# Vertex AI Configuration
+VERTEX_AI_LOCATION=us-central1
+VERTEX_AI_MODEL=gemini-1.5-pro
+
+# Gemini API Configuration
+GOOGLE_API_KEY=your_google_api_key_here
+
+# Application Configuration
 FLASK_ENV=development
 FLASK_DEBUG=True
-PORT=5000
+DEMO_MODE=False
+MAX_FILE_SIZE=10485760
+ALLOWED_EXTENSIONS=pdf,doc,docx,txt
+LOG_LEVEL=INFO
 ```
 
 #### Run Backend Server
