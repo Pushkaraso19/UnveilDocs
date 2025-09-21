@@ -38,6 +38,25 @@ const Chat = ({ uploadedFiles, onReupload, onStartAnalysis, onBackFromAnalysis, 
         }
     };
 
+    const handleDownloadSample = async () => {
+        try {
+            const response = await fetch(sampleDocument);
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'MASTER SERVICES AGREEMENT.pdf';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Error downloading sample file:', error);
+            alert('Error downloading sample file');
+        }
+    };
+
     const handleReuploadCancel = () => {
         setShowReuploadModal(false);
     };
@@ -56,6 +75,14 @@ const Chat = ({ uploadedFiles, onReupload, onStartAnalysis, onBackFromAnalysis, 
                     {/* Header with example button for upload section */}
                     <div className="chat-header upload-header">
                         <div className="upload-header-actions">
+                            <button 
+                                className="chat-action-btn upload-download-sample-btn"
+                                onClick={handleDownloadSample}
+                                title="Download sample legal document"
+                            >
+                                <span className="material-symbols-outlined">download</span>
+                                Download Sample
+                            </button>
                             <button 
                                 className="chat-action-btn upload-load-example-btn"
                                 onClick={handleAskExample}
@@ -86,8 +113,7 @@ const Chat = ({ uploadedFiles, onReupload, onStartAnalysis, onBackFromAnalysis, 
                                 ref={uploadOnlyFileInputRef}
                                 type="file"
                                 className="hidden"
-                                multiple
-                                accept=".pdf,.docx"
+                                accept=".pdf"
                                 onChange={handleFileUpload}
                                 disabled={isUploading}
                             />
@@ -105,7 +131,7 @@ const Chat = ({ uploadedFiles, onReupload, onStartAnalysis, onBackFromAnalysis, 
                                     Drag & drop or click to upload Legal Document
                                 </div>
                                 <div className="homepage-upload-text subtitle">
-                                    Supports PDF and DOCX files
+                                    Supports PDF files only
                                 </div>
                             </div>
                         )}
@@ -130,7 +156,7 @@ const Chat = ({ uploadedFiles, onReupload, onStartAnalysis, onBackFromAnalysis, 
                             <span className="material-symbols-outlined homepage-global-drop-icon">upload_file</span>
                             <div className="homepage-global-drop-text-container">
                                 <div className="homepage-global-drop-text">Drop files here</div>
-                                <div className="homepage-global-drop-subtext">PDF or DOCX files</div>
+                                <div className="homepage-global-drop-subtext">PDF files only</div>
                             </div>
                         </div>
                     </div>
@@ -153,10 +179,18 @@ const Chat = ({ uploadedFiles, onReupload, onStartAnalysis, onBackFromAnalysis, 
                     </div>
                     <div className="chat-header-actions">
                         <button 
+                            className="chat-action-btn chat-action-download"
+                            onClick={handleDownloadSample}
+                            title="Download sample legal document"
+                        >
+                            <span className="material-symbols-outlined">download</span>
+                            Download Sample
+                        </button>
+                        <button 
                             className="chat-action-btn chat-action-examples"
                             onClick={(e) => e.preventDefault()}
                             disabled={true}
-                            title="Example questions coming soon - Only analysis available in prototype"
+                            title="Example questions coming soon"
                         >
                             <span className="material-symbols-outlined">quiz</span>
                             Example Questions
@@ -175,7 +209,7 @@ const Chat = ({ uploadedFiles, onReupload, onStartAnalysis, onBackFromAnalysis, 
                     <div className="chat-input-container">
                         <input
                             type="text"
-                            placeholder="Type your questions here (Chat feature coming soon - Only analysis available)"
+                            placeholder="Type your questions here (Chat feature coming soon)"
                             className="chat-input"
                             value={question}
                             onChange={(e) => setQuestion(e.target.value)}
@@ -199,11 +233,16 @@ const Chat = ({ uploadedFiles, onReupload, onStartAnalysis, onBackFromAnalysis, 
                             onClick={handleSubmit}
                             className="chat-submit-btn chat-submit-btn-disabled"
                             disabled={true}
-                            title="Chat feature coming soon - Only analysis available in prototype"
+                            title="Chat feature coming soon"
                         >
                             <span className="material-symbols-outlined">send</span>
                         </button>
                     </div>
+                </div>
+                
+                {/* Warning message below chat bar */}
+                <div className="chat-warning">
+                    Use as guidance only. Confirm critical info with a lawyer.
                 </div>
             </div>
             

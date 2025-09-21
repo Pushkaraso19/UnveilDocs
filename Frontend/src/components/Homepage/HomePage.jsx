@@ -330,7 +330,7 @@ const HomePage = () => {
                                 Your AI Legal Assistant
                             </h1>
                             <p className="homepage-subtitle">
-                                Simply upload your legal documents. Ask questions in plain English and get instant, accurate answers. We support PDF and DOCX files.
+                                Simply upload your legal documents. Ask questions in plain English and get instant, accurate answers. We support PDF files only.
                             </p>
                         </div>
 

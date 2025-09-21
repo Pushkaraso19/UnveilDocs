@@ -173,34 +173,33 @@
   padding: 1rem;
   width: 100%;
   position: relative;
-  z-index: 10;
+  z-index: 500; /* Lower than header (1000) but high enough for interactivity */
   overflow-y: auto;
   overflow-x: hidden;
   /* Account for fixed header height */
-  margin-top: 80px;
-  /* Remove excessive bottom padding so chat/upload is not hidden */
-  padding-bottom: 0;
-  /* Remove min-height so chat/upload is always visible */
-  min-height: 0;
+  margin-top: 65px; /* Minimal gap after header */
+  /* When chat is active, constrain height to account for chat bar */
+  height: calc(100vh - 65px - 80px); /* 100vh - header height - chat bar height */
 }
 
 @media (min-width: 768px) {
   .homepage-main {
     padding: 1.5rem;
-    margin-top: 90px; /* Account for larger header on desktop */
+    margin-top: 75px; /* Minimal gap for desktop */
+    height: calc(100vh - 75px - 80px); /* 100vh - header height - chat bar height */
   }
 }
 
 /* Mobile responsive adjustments for fixed layout */
 @media (max-width: 767px) {
   .homepage-main {
-    margin-top: 70px;
+    margin-top: 60px; /* Minimal gap for mobile */
     padding: 0.75rem;
+    height: calc(100vh - 60px - 80px); /* 100vh - header height - chat bar height */
   }
   
   .homepage-content {
     padding: 1rem 0.5rem;
-    min-height: calc(100vh - 150px);
   }
 }
 
@@ -899,11 +898,12 @@
 
 /* Insights Integration Styles */
 .insights-main {
-  height: calc(100vh - 150px); /* Increased space for chat bar */
-  overflow-y: scroll;
-  overflow-x: hidden;
+  height: 100vh; /* Use full viewport height */
+  overflow: hidden; /* No scrolling on main container */
   padding: 0;
   margin: 0;
+  padding-bottom: 130px; /* Add padding to account for fixed chat interface */
+  box-sizing: border-box; /* Include padding in height calculation */
 }
 
 /* Custom scrollbar for insights main (full width) */
@@ -926,9 +926,10 @@
 
 .insights-scrollable-container {
   width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 1rem 120px 1rem; /* Increased bottom padding for chat space */
+  max-width: none; /* Remove max-width constraint to allow full width */
+  margin: 0;
+  padding: 0; /* Remove all padding so scrollbar can reach screen edge */
+  height: 100%; /* Fill the available height from parent .insights-main */
 }
 
 /* Override LegalInsights container styles when embedded */
@@ -943,22 +944,24 @@
 
 .insights-scrollable-container .legal-insights-content {
   position: relative;
-  z-index: 1;
-  height: 100%; /* Fill container height */
-  max-height: 100%; /* But don't exceed it */
+  z-index: 500; /* Higher than default but lower than header for interactivity */
+  height: 100%; /* Must fill container height for proper constraint chain */
+  max-height: 100%; /* Constrain to parent */
 }
 
 .insights-scrollable-container .legal-insights-main {
   padding: 1rem;
+  padding-right: 0; /* Remove right padding so scrollbar touches screen edge */
   height: 100% !important; /* Force height to respect parent container */
   max-height: 100% !important; /* Prevent overflow beyond parent */
-  overflow-y: auto !important; /* Enable scrolling within constrained height */
+  overflow-y: scroll !important; /* Force scrollbar to always be visible on insights */
   overflow-x: hidden !important; /* Prevent horizontal overflow */
+  z-index: 500 !important; /* Ensure content is interactive behind header */
 }
 
 .insights-scrollable-container .legal-insights-main-container {
   max-width: 56rem;
-  padding: 0;
+  padding: 0; /* Add horizontal padding back to content container */
   margin: 0 auto; /* Center the insights content */
 }
 
@@ -979,6 +982,10 @@
 
 /* Mobile responsive styles for insights integration */
 @media (max-width: 768px) {
+  .insights-main {
+    padding-bottom: 160px; /* More space needed for mobile chat interface */
+  }
+  
   .insights-scrollable-container .legal-insights-main {
     padding: 0.75rem;
   }
