@@ -467,7 +467,6 @@
     rgba(56, 224, 123, 0.15) 70%,
     rgba(56, 224, 123, 0.08) 100%
   );
-  animation: pulse-upload 1.5s infinite, shimmer-upload 3s infinite;
   min-height: 3.5rem;
   position: relative;
   overflow: hidden;
@@ -486,56 +485,9 @@
     rgba(255, 255, 255, 0.1) 50%,
     transparent 100%
   );
-  animation: upload-sweep 2s infinite;
 }
 
-@keyframes upload-sweep {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 100%;
-  }
-}
-
-@keyframes shimmer-upload {
-  0%, 100% {
-    background: linear-gradient(
-      135deg,
-      rgba(56, 224, 123, 0.2) 0%,
-      rgba(56, 224, 123, 0.1) 30%,
-      rgba(56, 224, 123, 0.15) 70%,
-      rgba(56, 224, 123, 0.08) 100%
-    );
-  }
-  50% {
-    background: linear-gradient(
-      135deg,
-      rgba(56, 224, 123, 0.25) 0%,
-      rgba(56, 224, 123, 0.15) 30%,
-      rgba(56, 224, 123, 0.2) 70%,
-      rgba(56, 224, 123, 0.12) 100%
-    );
-  }
-}
-
-@keyframes pulse-upload {
-  0%, 100% {
-    box-shadow: 
-      0 10px 30px -10px rgba(56, 224, 123, 0.3),
-      0 0 0 0 rgba(56, 224, 123, 0.2),
-      inset 0 1px 1px rgba(255, 255, 255, 0.1);
-    transform: scale(1);
-  }
-  50% {
-    box-shadow: 
-      0 15px 40px -5px rgba(56, 224, 123, 0.5),
-      0 0 30px rgba(56, 224, 123, 0.4),
-      0 0 0 4px rgba(56, 224, 123, 0.1),
-      inset 0 1px 1px rgba(255, 255, 255, 0.15);
-    transform: scale(1.01);
-  }
-}
+/* Removed bouncing animations for upload section */
 
 .homepage-upload-details {
   flex: 1;
